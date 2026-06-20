@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 'use strict';
 /*
- * competitor-ad-gallery / render.js
- * data/gallery.json → <vault>/output/ad-gallery/index.html (자체완결, 인라인 CSS/JS).
+ * render.js
+ * data/gallery.json → docs/index.html (자체완결, 인라인 CSS/JS).
  * 미디어는 같은 폴더의 assets/<page_id>/<lib>.jpg 를 상대경로로 참조 → 폴더째 이동·공유 가능.
  * 디자인: Linear/Notion 앱 셸 — 모노크롬 절제 + 모노스페이스 메타 + 우측 peek 패널 + 라이트/다크.
  */
 const fs = require('fs');
 const path = require('path');
 
-const SKILL_DIR = __dirname;
-const CFG = JSON.parse(fs.readFileSync(path.join(SKILL_DIR, 'config.json'), 'utf8'));
-const GALLERY_PATH = path.join(SKILL_DIR, 'data', 'gallery.json');
-const OUT_DIR = path.join(SKILL_DIR, CFG.output_dir || 'docs');
+const ROOT_DIR = __dirname;
+const CFG = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'config.json'), 'utf8'));
+const GALLERY_PATH = path.join(ROOT_DIR, 'data', 'gallery.json');
+const OUT_DIR = path.join(ROOT_DIR, CFG.output_dir || 'docs');
 const OUT_HTML = path.join(OUT_DIR, 'index.html');
 
 const gallery = JSON.parse(fs.readFileSync(GALLERY_PATH, 'utf8'));

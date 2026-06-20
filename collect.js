@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 /*
- * competitor-ad-gallery / collect.js
+ * collect.js
  * Meta Ad Library 경쟁사 광고 크리에이티브 수집기 (read-only).
  *
  * 수집 방식: 로그인 없이 Ad Library 페이지(view_all_page_id)를 헤드리스 크롬으로 열어
@@ -18,10 +18,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const SKILL_DIR = __dirname;
-const DATA_DIR = path.join(SKILL_DIR, 'data');
-const CFG = JSON.parse(fs.readFileSync(path.join(SKILL_DIR, 'config.json'), 'utf8'));
-const OUT_DIR = path.join(SKILL_DIR, CFG.output_dir || 'docs');
+const ROOT_DIR = __dirname;
+const DATA_DIR = path.join(ROOT_DIR, 'data');
+const CFG = JSON.parse(fs.readFileSync(path.join(ROOT_DIR, 'config.json'), 'utf8'));
+const OUT_DIR = path.join(ROOT_DIR, CFG.output_dir || 'docs');
 const ASSETS_DIR = path.join(OUT_DIR, 'assets');
 
 const STATE_PATH = path.join(DATA_DIR, 'state.json');

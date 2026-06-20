@@ -4,6 +4,3 @@ data/chunks/
 data/manifest.json
 *.log
 .DS_Store
-# handoff-only files (not part of the project)
-HANDOFF.md
-push-to-github.sh
