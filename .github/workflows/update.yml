@@ -35,11 +35,13 @@ jobs:
       - name: Collect new ads
         run: node collect.js
 
-      - name: Vision-tag new ads
+      - name: Vision-tag new ads (Claude Code · Max plan)
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          # 비용 절감 시: TAG_MODEL: claude-haiku-4-5
-        run: node tag.js
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        # 도구를 Read/Write/Glob 로만 스코프 — 승인 게이트 전체 우회 안 함.
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude -p "$(cat tag-prompt.md)" --allowedTools "Read,Write,Glob" --max-turns 150
 
       - name: Merge into gallery DB
         run: node collect.js --commit

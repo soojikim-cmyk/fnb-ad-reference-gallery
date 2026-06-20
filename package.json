@@ -4,14 +4,12 @@
   "description": "F&B 경쟁사 Meta 광고 크리에이티브 레퍼런스 갤러리 — Ad Library 수집 + 비전 태깅 + 필터 가능한 HTML 갤러리",
   "scripts": {
     "collect": "node collect.js",
-    "tag": "node tag.js",
     "commit": "node collect.js --commit",
     "render": "node render.js"
   },
   "license": "MIT",
   "type": "commonjs",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.105.0",
     "playwright": "^1.61.0"
   }
 }

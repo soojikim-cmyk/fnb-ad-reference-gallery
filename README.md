@@ -7,22 +7,29 @@
 ## 동작 방식
 
 ```
-collect.js   Ad Library(view_all_page_id) 를 헤드리스 크롬으로 열어 DOM에서
-             카드별 크리에이티브·카피·시작일·랜딩 URL 추출 → 신규만 미디어 다운로드
-tag.js       신규 소재를 Claude API(비전)로 hook_type·appeal·tone·summary 분류
+collect.js     Ad Library(view_all_page_id) 를 헤드리스 크롬으로 열어 DOM에서
+               카드별 크리에이티브·카피·시작일·랜딩 URL 추출 → 신규만 미디어 다운로드
+Claude Code    신규 소재를 비전으로 hook_type·appeal·tone·summary 분류 (tag-prompt.md 지시문)
 collect.js --commit   신규+태그를 data/gallery.json 에 머지, 중복 제거, is_active 재조정
-render.js    gallery.json → docs/index.html + docs/assets (브랜드·포맷·후킹·소구·톤 필터,
-             카피 검색, 인라인 영상 재생, 상세 패널, 라이트/다크)
+render.js      gallery.json → docs/index.html + docs/assets (브랜드·포맷·후킹·소구·톤 필터,
+               카피 검색, 인라인 영상 재생, 상세 패널, 라이트/다크)
 ```
 
 > 대한민국(KR)은 노출수·지출 범위를 제공하지 않으므로, 갤러리는 성과 지표가 아니라 **크리에이티브·카피·시작일·태그** 중심입니다. 공개 Ad Library(투명성 데이터) 기반 read-only 수집.
 
 ## 셋업
 
-1. 저장소의 **Settings → Secrets and variables → Actions** 에 `ANTHROPIC_API_KEY` 추가 (태깅용)
-2. **Settings → Pages** 에서 Source = `Deploy from a branch`, Branch = `main` / `/docs`
-3. **Settings → Actions → General** 에서 Workflow permissions = `Read and write`
-4. `Actions` 탭 → `Update gallery` → `Run workflow` 로 첫 실행(이후 매주 월요일 자동)
+태깅은 **Claude Code(Pro/Max 구독)** 로 동작합니다. 별도 API 키·종량 결제가 아니라 구독 사용량 내에서 처리됩니다.
+
+1. **OAuth 토큰 발급(로컬 1회)** — Max로 로그인된 머신에서:
+   ```bash
+   npm install -g @anthropic-ai/claude-code
+   claude setup-token          # 출력되는 토큰 복사
+   ```
+2. 저장소 **Settings → Secrets and variables → Actions** 에 `CLAUDE_CODE_OAUTH_TOKEN` 시크릿으로 그 토큰 등록
+3. **Settings → Pages**: Source = `Deploy from a branch`, Branch = `main` / `/docs`
+4. **Settings → Actions → General**: Workflow permissions = `Read and write`
+5. `Actions` 탭 → `Update gallery` → `Run workflow` 로 첫 실행(이후 매주 월요일 자동)
 
 라이브 갤러리: `https://soojikim-cmyk.github.io/fnb-ad-reference-gallery/`
 
@@ -31,10 +38,10 @@ render.js    gallery.json → docs/index.html + docs/assets (브랜드·포맷·
 ```bash
 npm install
 npx playwright install chromium
-node collect.js                       # 신규 수집 → data/manifest.json
-ANTHROPIC_API_KEY=sk-... node tag.js  # 신규 비전 태깅 → data/tags.json
-node collect.js --commit              # gallery.json 머지
-node render.js                        # docs/index.html 재생성
+node collect.js                                                   # 신규 수집 → data/manifest.json
+claude -p "$(cat tag-prompt.md)" --allowedTools "Read,Write,Glob" # 신규 비전 태깅 → data/tags.json (Claude Code 로그인 필요)
+node collect.js --commit                                          # gallery.json 머지
+node render.js                                                    # docs/index.html 재생성
 ```
 
 ## 대상 브랜드
@@ -43,7 +50,7 @@ node render.js                        # docs/index.html 재생성
 
 ## 비용
 
-태깅은 신규 소재에만 발생(주간 수십~수백 건). 기본 모델은 `claude-opus-4-8`이며, 비용을 줄이려면 워크플로 또는 환경변수에서 `TAG_MODEL=claude-haiku-4-5` 로 바꾸면 된다(이 분류 작업엔 충분).
+태깅은 Claude Code(Pro/Max 구독) 사용량으로 처리되어 **별도 API 종량 결제가 없습니다**. 신규 소재가 많은 주에는 구독 사용량 한도에 영향을 줄 수 있으니, 한도가 빠듯하면 대상 브랜드 수를 조절하세요.
 
 ## 주의
 
