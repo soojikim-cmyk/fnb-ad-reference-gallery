@@ -116,7 +116,7 @@ function PAGE_EXTRACT() {
       videoUrl = video.src || video.currentSrc || null;
       posterUrl = video.poster || creativeImgs[0] || null;
     } else if (creativeImgs.length > 1) {
-      format = '카루셀';
+      format = '캐러셀';
       imageUrls = creativeImgs;
     } else {
       format = '단일이미지';

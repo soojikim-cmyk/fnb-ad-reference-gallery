@@ -248,7 +248,7 @@ main{padding:20px 22px 90px}
 
 <div class="cmd">
   <span class="sel"><select id="f-brand"><option value="">브랜드 전체</option>${brands.map(b => `<option value="${b.label}">${b.label}</option>`).join('')}</select></span>
-  <span class="sel"><select id="f-format"><option value="">포맷</option>${opt(['단일이미지', '카루셀', '영상'])}</select></span>
+  <span class="sel"><select id="f-format"><option value="">포맷</option>${opt(['단일이미지', '캐러셀', '영상'])}</select></span>
   <span class="sel"><select id="f-hook"><option value="">후킹</option>${opt(enums.hook_type)}</select></span>
   <span class="sel"><select id="f-appeal"><option value="">소구</option>${opt(enums.appeal)}</select></span>
   <span class="sel"><select id="f-tone"><option value="">톤</option>${opt(enums.tone)}</select></span>
