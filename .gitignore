@@ -1,6 +1,8 @@
 node_modules/
 data/.pwprofile/
+data/.pwprofile-ig/
 data/chunks/
 data/manifest.json
+data/manifest-ig.json
 *.log
 .DS_Store
