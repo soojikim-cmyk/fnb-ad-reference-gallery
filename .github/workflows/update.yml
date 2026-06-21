@@ -1,10 +1,11 @@
 name: Update gallery
 
-# 매주 월요일 + 수동 실행. 신규 광고 수집 → 비전 태깅 → 갤러리 재생성 → 커밋·푸시.
+# 매일 오전 11시(KST) + 수동 실행. 신규 광고 수집 → 비전 태깅 → 갤러리 재생성 → 커밋·푸시.
+# 클라우드에서 도므로 컴퓨터가 꺼져 있어도 자동 실행됩니다(Meta 광고 한정).
 # main 의 docs/ 가 갱신되면 GitHub Pages 가 자동 재배포됩니다.
 on:
   schedule:
-    - cron: '0 0 * * 1'   # Mon 00:00 UTC (= 09:00 KST)
+    - cron: '0 2 * * *'   # 매일 02:00 UTC (= 11:00 KST)
   workflow_dispatch:
 
 permissions:
