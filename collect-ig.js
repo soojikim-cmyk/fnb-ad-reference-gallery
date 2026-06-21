@@ -158,19 +158,33 @@ async function igJson(page, url) {
 }
 
 async function fetchProfilePosts(page, handle) {
+  // 1차: web_profile_info — user.id 확보(+ 운 좋으면 GraphQL edges 로 게시물도 바로 확보)
   const url = `https://www.instagram.com/api/v1/users/web_profile_info/?username=${encodeURIComponent(handle)}`;
   const j = await igJson(page, url);
   if (j.__error) throw new Error(`profile ${handle}: ${j.__error}`);
   const user = j.data && j.data.user;
   if (!user) throw new Error(`profile ${handle}: no user in response (구조 변경 가능성)`);
-  const edges = (user.edge_owner_to_timeline_media && user.edge_owner_to_timeline_media.edges) || [];
+
   const posts = [];
+  const edges = (user.edge_owner_to_timeline_media && user.edge_owner_to_timeline_media.edges) || [];
   for (const e of edges) {
     const n = normalizeGraphNode(e && e.node);
     if (n) { if (!n.author) n.author = handle; posts.push(n); }
     if (posts.length >= MAX_POSTS) break;
   }
-  return posts;
+  if (posts.length > 0) return posts;
+
+  // 2차(폴백): web_profile_info 가 게시물을 비워주는 경우 → 유저 피드 엔드포인트로 v1 미디어 수집
+  // (해시태그와 동일한 v1 media 구조 → 동일 파서 재사용)
+  const uid = user.id;
+  if (!uid) return [];
+  const feedUrl = `https://www.instagram.com/api/v1/feed/user/${uid}/?count=${MAX_POSTS}`;
+  const feed = await igJson(page, feedUrl);
+  if (feed.__error) throw new Error(`profile ${handle} feed: ${feed.__error}`);
+  const out = [], seen = new Set();
+  findV1Media(feed, out, seen, 0);
+  for (const p of out) { if (!p.author) p.author = handle; }
+  return out.slice(0, MAX_POSTS);
 }
 
 async function fetchHashtagPosts(page, tag) {
@@ -336,6 +350,12 @@ function commit() {
         // 같은 게시물이 다른 해시태그에서도 잡힌 경우 → 해시태그만 병합, 중복 추가 안 함
         if (p.hashtag) {
           existing.hashtags = Array.from(new Set([...(existing.hashtags || []), p.hashtag]));
+        }
+        // 태그 백필: 커밋 이후 태깅한 경우에도 반영(아직 비어있고 tags.json 에 생겼으면 채움)
+        const tgx = tags[key];
+        if (tgx && existing.tags && !existing.tags.summary && !existing.tags.hook_type &&
+            (tgx.summary || tgx.hook_type || tgx.appeal || tgx.tone)) {
+          existing.tags = { hook_type: tgx.hook_type || null, appeal: tgx.appeal || null, tone: tgx.tone || null, summary: tgx.summary || null };
         }
         existing.last_seen = ts;
         merged++;
