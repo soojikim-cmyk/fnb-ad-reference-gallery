@@ -32,8 +32,39 @@
     "appeal": ["가성비·대용량", "품질·성분", "신뢰·리뷰", "한정·긴급", "라이프스타일", "편의성"],
     "tone": ["정보형", "감성형", "유머형", "미니멀"]
   },
+
+  "ig_owned": [
+    { "label": "CJ제일제당", "handle": "cjcheiljedang" },
+    { "label": "아워홈", "handle": "ourhome.delicious" },
+    { "label": "CJ 비비고", "handle": "bibigo.kr" },
+    { "label": "신세계푸드 올반", "handle": "shinsegaefood.official" },
+    { "label": "하림 더미식", "handle": "themishik_official" },
+    { "label": "도드람", "handle": "dodram.official" },
+    { "label": "농심", "handle": "nongshim" },
+    { "label": "오뚜기", "handle": "otoki_daily" },
+    { "label": "풀무원", "handle": "pulmuone" },
+    { "label": "하림", "handle": "harim_official" }
+  ],
+  "ig_influencer": [
+    { "handle": "cjonstyle_liveshow" },
+    { "handle": "nalssin_cook" },
+    { "handle": "kongkong.mommy" },
+    { "handle": "alora_home" },
+    { "handle": "yuni_siktak" },
+    { "handle": "minsajang_" }
+  ],
+  "ig_hashtags": {
+    "상황": ["집밥", "한그릇", "주말집밥", "부모님선물", "저당", "초복", "중복", "말복"],
+    "제품": ["도가니탕", "갈비탕", "갈비찜", "고등어", "고등어구이", "보양식"],
+    "4050트렌드": ["건강식", "건강식품", "명절"]
+  },
+  "ig_max_posts_per_target": 30,
+  "ig_scroll_pause_ms": 2500,
+  "ig_profile_dir": "data/.pwprofile-ig",
+
   "_notes": {
     "format": "format(단일이미지/캐러셀/영상)은 DOM에서 자동 판정하므로 비전 태깅 불필요",
-    "extraction": "수집은 GraphQL 인터셉트가 아니라 렌더된 DOM에서 '라이브러리 ID:' 앵커 기준으로 추출(2026-06-20 recon으로 확정, 로그인 불필요)"
+    "extraction": "수집은 GraphQL 인터셉트가 아니라 렌더된 DOM에서 '라이브러리 ID:' 앵커 기준으로 추출(2026-06-20 recon으로 확정, 로그인 불필요)",
+    "instagram": "ig_* 수집은 collect-ig.js. 로그인 세션 필요(데이터센터 IP 차단 → GitHub Actions 불가, 로컬 실행 전용). 최초 1회 `node collect-ig.js --login`."
   }
 }

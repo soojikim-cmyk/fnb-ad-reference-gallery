@@ -44,9 +44,32 @@ node collect.js --commit                                          # gallery.json
 node render.js                                                    # docs/index.html 재생성
 ```
 
-## 대상 브랜드
+## 인스타그램 동향 (온드미디어 · 인플루언서 · 해시태그)
 
-`config.json` 의 `brands` 배열이 SSOT — `{ "label": "...", "page_id": "..." }` 추가/삭제로 관리한다. 브랜드를 17개 이상으로 늘리면 `render.js` 의 `BRAND_PALETTE`(색상)도 함께 확인. 국가·태그 enum 도 `config.json` 에서 관리.
+대기업 F&B 브랜드 공식계정·인플루언서·해시태그의 게시물 동향을 같은 갤러리에 **탭**으로 추가한다
+(`collect-ig.js`). 각 게시물의 미디어·캡션·좋아요/댓글 수·게시일을 수집하고 기존 비전 태깅을 재사용한다.
+
+> ⚠️ **Meta 광고와 다른 점:** 일반 인스타그램은 ① 로그인 필요 ② 강한 봇 차단 ③ 데이터센터 IP 차단이라
+> **GitHub Actions에서 자동 수집이 안 된다.** 인스타 수집은 **로그인된 로컬 머신에서 주 1회 수동 실행**하고,
+> 결과(`data/gallery.json` + `docs/assets/ig/...`)를 커밋·푸시하면 GitHub Pages가 재배포한다.
+> 자동 수집은 ToS 회색지대이며 레이트리밋/계정정지 위험이 있으니 **보조(버너) 계정** 사용을 권장한다.
+
+```bash
+npm run login:ig      # 최초 1회: 열린 브라우저에서 인스타 로그인 (세션은 data/.pwprofile-ig 에 저장)
+npm run collect:ig    # 신규 게시물 수집 → data/manifest-ig.json + docs/assets/ig/ 미디어
+claude -p "$(cat tag-prompt.md)" --allowedTools "Read,Write,Glob"   # 비전 태깅 (광고+인스타 공통)
+npm run commit:ig     # gallery.json 머지 (복합 키 ig_owned:* / ig_influencer:* / ig_hashtag:*)
+npm run render        # docs/index.html 재생성 → 커밋·푸시
+```
+
+수집 대상은 `config.json` 의 `ig_owned`(계정), `ig_influencer`(계정), `ig_hashtags`(그룹별 해시태그)가 SSOT.
+한 번에 가져올 게시물 수는 `ig_max_posts_per_target`(기본 30)로 조절한다.
+
+## 대상 브랜드 · 계정 · 해시태그
+
+`config.json` 이 SSOT다. Meta 광고는 `brands` 배열(`{ "label", "page_id" }`), 인스타는
+`ig_owned` / `ig_influencer` / `ig_hashtags` 로 관리한다. 브랜드/계정을 18개 이상으로 늘리면
+`render.js` 의 `BRAND_PALETTE`(색상)도 함께 확인. 국가·태그 enum 도 `config.json` 에서 관리.
 
 ## 비용
 

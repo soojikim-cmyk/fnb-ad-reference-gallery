@@ -28,11 +28,29 @@ function fmtSeoul(iso) {
   } catch { return iso; }
 }
 
+const srcOf = a => a.source || 'meta_ad';
 const brands = CFG.brands.map(b => {
   const list = ads.filter(a => a.page_id === b.page_id);
   return { label: b.label, page_id: b.page_id, total: list.length, active: list.filter(a => a.is_active).length };
 });
 const totalActive = ads.filter(a => a.is_active).length;
+
+// 소스(탭)별 개수
+const srcCount = { meta_ad: 0, ig_owned: 0, ig_influencer: 0, ig_hashtag: 0 };
+ads.forEach(a => { const s = srcOf(a); if (s in srcCount) srcCount[s]++; });
+
+// 탭별 계정/해시태그 옵션 (SSOT = config)
+const igOwned = CFG.ig_owned || [];
+const igInfluencer = CFG.ig_influencer || [];
+const igHashtags = CFG.ig_hashtags || {};
+const accounts = {
+  meta_ad: CFG.brands.map(b => b.label),
+  ig_owned: igOwned.map(b => b.label),
+  ig_influencer: igInfluencer.map(b => b.handle),
+  ig_hashtag: [],
+};
+const hgroups = Object.keys(igHashtags);
+const hashtagsFlat = [...new Set([].concat(...Object.values(igHashtags)))];
 
 // 빌드 시 각 썸네일의 실제 픽셀 치수를 읽어 카드에 aspect-ratio 로 박는다 → 로딩 중 레이아웃 출렁임 제거
 function jpegSize(rel) {
@@ -53,7 +71,7 @@ function jpegSize(rel) {
   return null;
 }
 
-// 브랜드별 고유 색 (config 순서대로) — 카드 상단 브랜드 칩 + peek 점에 사용해 한눈에 구분
+// 브랜드별 고유 색 (config 순서대로) — 카드 상단 칩 + peek 점에 사용해 한눈에 구분
 const BRAND_PALETTE = [
   '#5e6ad2', '#2f9e8f', '#c2853a', '#c05b86', '#3a8dde', '#9a6ad2',
   '#4a9e5c', '#d2693a', '#2f9ec2', '#c24a8a', '#8a9e3a', '#c2503a',
@@ -61,15 +79,42 @@ const BRAND_PALETTE = [
 ];
 const brandColor = {};
 CFG.brands.forEach((b, i) => { brandColor[b.page_id] = BRAND_PALETTE[i % BRAND_PALETTE.length]; });
+const ownedColor = {};
+igOwned.forEach((b, i) => { ownedColor[b.label] = BRAND_PALETTE[i % BRAND_PALETTE.length]; });
+const inflColor = {};
+igInfluencer.forEach((b, i) => { inflColor[b.handle] = BRAND_PALETTE[i % BRAND_PALETTE.length]; });
+const GROUP_PALETTE = ['#5e6ad2', '#2f9e8f', '#c2853a', '#c05b86', '#3a8dde'];
+const groupColor = {};
+hgroups.forEach((g, i) => { groupColor[g] = GROUP_PALETTE[i % GROUP_PALETTE.length]; });
+
+function colorFor(a) {
+  const s = srcOf(a);
+  if (s === 'ig_owned') return ownedColor[a.brand_label] || BRAND_PALETTE[0];
+  if (s === 'ig_influencer') return inflColor[a.handle] || BRAND_PALETTE[0];
+  if (s === 'ig_hashtag') return groupColor[a.hashtag_group] || BRAND_PALETTE[0];
+  return brandColor[a.page_id] || BRAND_PALETTE[0];
+}
 
 const DATA = JSON.stringify(ads.map(a => {
   const s = jpegSize(a.media_rel);
+  const src = srcOf(a);
+  // 화면에 보일 이름: 광고/온드=브랜드, 인플루언서=핸들, 해시태그=#태그
+  const display = src === 'ig_influencer' ? (a.handle || a.brand_label)
+    : src === 'ig_hashtag' ? (a.brand_label || (a.hashtags && a.hashtags[0] ? '#' + a.hashtags[0] : '#'))
+    : a.brand_label;
+  // 계정 필터 매칭 값(meta/owned=브랜드 라벨, influencer=핸들)
+  const account = src === 'ig_influencer' ? (a.handle || '') : (a.brand_label || '');
   return {
-    id: a.library_id, brand: a.brand_label, page_id: a.page_id, format: a.format,
-    bc: brandColor[a.page_id] || BRAND_PALETTE[0],
+    id: a.library_id, src, brand: display, account, handle: a.handle || '',
+    page_id: a.page_id || '', format: a.format,
+    bc: colorFor(a),
     started: a.started || '', active: !!a.is_active, collation: a.collation || 0,
+    likes: (typeof a.likes === 'number') ? a.likes : null,
+    comments: (typeof a.comments === 'number') ? a.comments : null,
+    hashtags: a.hashtags || [], hgroup: a.hashtag_group || '',
     copy: a.copy || '', cta: a.cta || '', landing: a.landing_url || '',
-    detail: a.detail_url || '', video: a.video_url || '', media: a.media_rel || '',
+    detail: a.detail_url || '', permalink: a.permalink || '',
+    video: a.video_url || '', media: a.media_rel || '',
     ar: s ? `${s.w} / ${s.h}` : '',
     hook: (a.tags && a.tags.hook_type) || '', appeal: (a.tags && a.tags.appeal) || '',
     tone: (a.tags && a.tags.tone) || '', summary: (a.tags && a.tags.summary) || '',
@@ -78,6 +123,7 @@ const DATA = JSON.stringify(ads.map(a => {
 
 const enums = CFG.tag_enums;
 const opt = arr => arr.map(v => `<option value="${v}">${v}</option>`).join('');
+const TABMETA = JSON.stringify({ accounts, hgroups, hashtagsFlat });
 
 const html = `<!doctype html>
 <html lang="ko" data-theme="light"><head><meta charset="utf-8">
@@ -127,9 +173,16 @@ button{font-family:inherit}
   color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .14s}
 .iconbtn:hover{border-color:var(--line-strong);color:var(--text)}
 
+/* tab row */
+.tabrow{position:sticky;top:52px;z-index:29;height:48px;display:flex;align-items:center;padding:0 22px;overflow-x:auto;
+  background:color-mix(in srgb,var(--ground) 82%,transparent);backdrop-filter:saturate(1.4) blur(12px)}
+.tabrow .seg button .tc{display:inline-block;margin-left:5px;font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+.tabrow .seg button.on .tc{color:var(--accent)}
+
 /* command row */
-.cmd{position:sticky;top:52px;z-index:29;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 22px;
+.cmd{position:sticky;top:100px;z-index:28;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 22px;
   background:color-mix(in srgb,var(--ground) 82%,transparent);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.sel[hidden]{display:none}
 .seg{display:flex;background:var(--inset);border:1px solid var(--line-2);border-radius:9px;padding:2px}
 .seg button{border:none;background:none;cursor:pointer;color:var(--muted);font-size:12.5px;font-weight:500;
   padding:5px 12px;border-radius:7px;transition:all .14s;white-space:nowrap}
@@ -237,8 +290,8 @@ main{padding:20px 22px 90px}
 <body>
 
 <div class="topbar">
-  <div class="brandmark"><span class="glyph"></span>Ad References</div>
-  <span class="tb-meta mono"><b>${ads.length}</b> ads · ${brands.length} brands · <b>${totalActive}</b> active</span>
+  <div class="brandmark"><span class="glyph"></span>F&B References</div>
+  <span class="tb-meta mono"><b>${ads.length}</b> items · 광고 ${srcCount.meta_ad} · IG ${srcCount.ig_owned + srcCount.ig_influencer + srcCount.ig_hashtag}</span>
   <div class="tb-right">
     <button class="iconbtn" id="theme" title="테마 전환" aria-label="테마 전환">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
@@ -246,14 +299,25 @@ main{padding:20px 22px 90px}
   </div>
 </div>
 
+<div class="tabrow">
+  <div class="seg" id="tabs" role="tablist">
+    <button class="on" data-tab="meta_ad">Meta 광고 <span class="tc">${srcCount.meta_ad}</span></button>
+    <button data-tab="ig_owned">온드미디어 <span class="tc">${srcCount.ig_owned}</span></button>
+    <button data-tab="ig_influencer">인플루언서 <span class="tc">${srcCount.ig_influencer}</span></button>
+    <button data-tab="ig_hashtag">해시태그 <span class="tc">${srcCount.ig_hashtag}</span></button>
+  </div>
+</div>
+
 <div class="cmd">
-  <span class="sel"><select id="f-brand"><option value="">브랜드 전체</option>${brands.map(b => `<option value="${b.label}">${b.label}</option>`).join('')}</select></span>
-  <span class="sel"><select id="f-format"><option value="">포맷</option>${opt(['단일이미지', '캐러셀', '영상'])}</select></span>
+  <span class="sel" data-show="meta_ad ig_owned ig_influencer"><select id="f-brand"><option value="">브랜드 전체</option>${brands.map(b => `<option value="${b.label}">${b.label}</option>`).join('')}</select></span>
+  <span class="sel" data-show="ig_hashtag"><select id="f-group"><option value="">그룹 전체</option>${opt(hgroups)}</select></span>
+  <span class="sel" data-show="ig_hashtag"><select id="f-hashtag"><option value="">해시태그 전체</option>${hashtagsFlat.map(h => `<option value="${h}">#${h}</option>`).join('')}</select></span>
+  <span class="sel"><select id="f-format"><option value="">포맷</option>${opt(['단일이미지', '캐러셀', '영상', '릴스'])}</select></span>
   <span class="sel"><select id="f-hook"><option value="">후킹</option>${opt(enums.hook_type)}</select></span>
   <span class="sel"><select id="f-appeal"><option value="">소구</option>${opt(enums.appeal)}</select></span>
   <span class="sel"><select id="f-tone"><option value="">톤</option>${opt(enums.tone)}</select></span>
-  <span class="sel"><select id="f-active"><option value="">상태</option><option value="1">게재 중</option><option value="0">종료</option></select></span>
-  <span class="sel"><select id="f-sort"><option value="new">최신순</option><option value="old">오래된순</option></select></span>
+  <span class="sel" data-show="meta_ad"><select id="f-active"><option value="">상태</option><option value="1">게재 중</option><option value="0">종료</option></select></span>
+  <span class="sel"><select id="f-sort"><option value="new">최신순</option><option value="old">오래된순</option><option value="pop">인기순</option></select></span>
   <label class="search">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="f-q" type="search" placeholder="카피·요약 검색" aria-label="검색">
@@ -275,18 +339,21 @@ main{padding:20px 22px 90px}
 
 <script>
 const ADS = ${DATA};
+const TABMETA = ${TABMETA};
 const $ = s => document.querySelector(s);
-const FILT = ['f-brand','f-format','f-hook','f-appeal','f-tone','f-active','f-sort','f-q'];
-const LAB = {'f-brand':'브랜드','f-format':'포맷','f-hook':'후킹','f-appeal':'소구','f-tone':'톤','f-active':'상태'};
-let view = [], cur = -1, activeCard = null;
+const FILT = ['f-brand','f-group','f-hashtag','f-format','f-hook','f-appeal','f-tone','f-active','f-sort','f-q'];
+const LAB = {'f-brand':'브랜드','f-group':'그룹','f-hashtag':'해시태그','f-format':'포맷','f-hook':'후킹','f-appeal':'소구','f-tone':'톤','f-active':'상태'};
+let tab = 'meta_ad', view = [], cur = -1, activeCard = null;
 const esc = s => (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtNum = n => n==null?'':(n>=10000?(n/10000).toFixed(n>=100000?0:1).replace(/\.0$/,'')+'만':n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'천':String(n));
+function engaged(a){let o='';if(a.likes!=null)o+='<span class="sep">·</span><span>♥ '+fmtNum(a.likes)+'</span>';if(a.comments!=null)o+='<span class="sep">·</span><span>💬 '+fmtNum(a.comments)+'</span>';return o}
 function pills(a){let o='';if(a.format)o+='<span class="pill fmt">'+esc(a.format)+'</span>';
   if(a.hook)o+='<span class="pill"><span class="d h"></span>'+esc(a.hook)+'</span>';
   if(a.appeal)o+='<span class="pill"><span class="d a"></span>'+esc(a.appeal)+'</span>';
   if(a.tone)o+='<span class="pill"><span class="d t"></span>'+esc(a.tone)+'</span>';return o}
 function card(a,i){
   const cover = a.media ? '<img loading="lazy" decoding="async" src="'+a.media+'" alt="">' : '<div class="ph">미리보기 없음</div>';
-  const play = a.format==='영상' ? '<div class="play"><button class="pbtn" aria-label="재생"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6l9 6-9 6z"/></svg></button></div>' : '';
+  const play = (a.format==='영상'||a.format==='릴스') ? '<div class="play"><button class="pbtn" aria-label="재생"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 6l9 6-9 6z"/></svg></button></div>' : '';
   const ver = a.collation>1 ? '<div class="ver">v'+a.collation+'</div>' : '';
   const cs = a.ar ? ' style="aspect-ratio:'+a.ar+'"' : '';
   return '<article class="card'+(a.active?'':' off')+'" data-i="'+i+'" tabindex="0">'+
@@ -296,7 +363,7 @@ function card(a,i){
       (a.summary?'<div class="title">'+esc(a.summary)+'</div>':'')+
       '<div class="excerpt">'+esc(a.copy)+'</div>'+
       '<div class="pills">'+pills(a)+'</div>'+
-      '<div class="cmeta"><span>'+esc(a.started||'—')+'</span>'+(a.cta?'<span class="sep">·</span><span>'+esc(a.cta)+'</span>':'')+'</div>'+
+      '<div class="cmeta"><span>'+esc(a.started||'—')+'</span>'+(a.cta?'<span class="sep">·</span><span>'+esc(a.cta)+'</span>':'')+engaged(a)+'</div>'+
     '</div></article>';
 }
 const fv = () => { const o={}; FILT.forEach(id=>o[id]=$('#'+id).value); return o };
@@ -317,8 +384,9 @@ const emptyEl=document.createElement('div');emptyEl.className='empty';emptyEl.te
 function apply(){
   if(activeCard)stopInline(activeCard);
   const f=fv(), q=(f['f-q']||'').trim().toLowerCase();
-  const vis=ADS.map((a,idx)=>({a,idx})).filter(({a})=>(!f['f-brand']||a.brand===f['f-brand'])&&(!f['f-format']||a.format===f['f-format'])&&(!f['f-hook']||a.hook===f['f-hook'])&&(!f['f-appeal']||a.appeal===f['f-appeal'])&&(!f['f-tone']||a.tone===f['f-tone'])&&(f['f-active']===''||(f['f-active']==='1')===a.active)&&(!q||a.copy.toLowerCase().includes(q)||(a.summary||'').toLowerCase().includes(q)));
-  vis.sort((x,y)=>f['f-sort']==='old'?(x.a.started>y.a.started?1:-1):(x.a.started<y.a.started?1:-1));
+  const vis=ADS.map((a,idx)=>({a,idx})).filter(({a})=>a.src===tab&&(!f['f-brand']||a.account===f['f-brand'])&&(!f['f-group']||a.hgroup===f['f-group'])&&(!f['f-hashtag']||(a.hashtags||[]).includes(f['f-hashtag']))&&(!f['f-format']||a.format===f['f-format'])&&(!f['f-hook']||a.hook===f['f-hook'])&&(!f['f-appeal']||a.appeal===f['f-appeal'])&&(!f['f-tone']||a.tone===f['f-tone'])&&(f['f-active']===''||(f['f-active']==='1')===a.active)&&(!q||a.copy.toLowerCase().includes(q)||(a.summary||'').toLowerCase().includes(q)));
+  if(f['f-sort']==='pop')vis.sort((x,y)=>(y.a.likes==null?-1:y.a.likes)-(x.a.likes==null?-1:x.a.likes));
+  else vis.sort((x,y)=>f['f-sort']==='old'?(x.a.started>y.a.started?1:-1):(x.a.started<y.a.started?1:-1));
   view=vis.map(o=>o.idx);
   const visset=new Set(view);
   nodes.forEach((el,idx)=>{const d=visset.has(idx)?'':'none';if(el.style.display!==d)el.style.display=d;});
@@ -326,25 +394,36 @@ function apply(){
   view.forEach(idx=>frag.appendChild(nodes[idx]));
   grid.insertBefore(frag,emptyEl);
   emptyEl.style.display=view.length?'none':'';
-  $('#count').innerHTML='<b>'+view.length+'</b> / '+ADS.length;
+  const tabTotal=ADS.reduce((n,a)=>n+(a.src===tab?1:0),0);
+  $('#count').innerHTML='<b>'+view.length+'</b> / '+tabTotal;
   afchips(f);
 }
 function openPeek(i){
   if(i<0||i>=view.length)return; cur=i; const a=ADS[view[i]];
   $('#p-brand').textContent=a.brand; $('#p-fmt').textContent=a.format; $('#p-dot').style.background=a.bc;
   const media=a.media?'<img src="'+a.media+'" alt="">':'<div style="min-height:280px;display:flex;align-items:center;justify-content:center;color:#888">미리보기 없음</div>';
+  const isIG=a.src!=='meta_ad';
+  const idVal=isIG?String(a.id).split(':').pop():a.id;
+  let links='';
+  if(a.video)links+='<a class="primary" href="'+esc(a.video)+'" target="_blank" rel="noopener">영상 재생</a>';
+  if(isIG){if(a.permalink)links+='<a'+(a.video?'':' class="primary"')+' href="'+esc(a.permalink)+'" target="_blank" rel="noopener">인스타그램에서 보기</a>';}
+  else{if(a.detail)links+='<a href="'+esc(a.detail)+'" target="_blank" rel="noopener">Ad Library 원본</a>';if(a.landing)links+='<a href="'+esc(a.landing)+'" target="_blank" rel="noopener">랜딩 페이지</a>';}
   $('#pbody').innerHTML=
     '<div class="pmedia">'+media+'</div>'+
     (a.summary?'<div class="ptitle">'+esc(a.summary)+'</div>':'')+
     '<div class="pills">'+pills(a)+'</div>'+
     '<dl class="prop">'+
-      '<dt>게재 시작</dt><dd class="mono">'+esc(a.started||'—')+(a.active?'':' · 종료')+'</dd>'+
-      (a.cta?'<dt>CTA</dt><dd>'+esc(a.cta)+'</dd>':'')+
-      (a.collation>1?'<dt>버전</dt><dd>'+a.collation+'개 크리에이티브</dd>':'')+
-      '<dt>라이브러리 ID</dt><dd class="mono">'+esc(a.id)+'</dd>'+
+      '<dt>'+(isIG?'게시일':'게재 시작')+'</dt><dd class="mono">'+esc(a.started||'—')+(!isIG&&!a.active?' · 종료':'')+'</dd>'+
+      (isIG&&a.handle?'<dt>계정</dt><dd class="mono">@'+esc(a.handle)+'</dd>':'')+
+      (isIG&&(a.likes!=null||a.comments!=null)?'<dt>참여</dt><dd class="mono">'+(a.likes!=null?'♥ '+a.likes.toLocaleString():'')+(a.comments!=null?'  💬 '+a.comments.toLocaleString():'')+'</dd>':'')+
+      (isIG&&a.hgroup?'<dt>해시태그 그룹</dt><dd>'+esc(a.hgroup)+'</dd>':'')+
+      (isIG&&a.hashtags&&a.hashtags.length?'<dt>해시태그</dt><dd>'+a.hashtags.map(h=>'#'+esc(h)).join(' ')+'</dd>':'')+
+      (!isIG&&a.cta?'<dt>CTA</dt><dd>'+esc(a.cta)+'</dd>':'')+
+      (!isIG&&a.collation>1?'<dt>버전</dt><dd>'+a.collation+'개 크리에이티브</dd>':'')+
+      '<dt>'+(isIG?'게시물':'라이브러리 ID')+'</dt><dd class="mono">'+esc(idVal)+'</dd>'+
     '</dl>'+
     '<div class="pcopy">'+esc(a.copy||'(카피 없음)')+'</div>'+
-    '<div class="plinks">'+(a.video?'<a class="primary" href="'+esc(a.video)+'" target="_blank" rel="noopener">영상 재생</a>':'')+(a.detail?'<a href="'+esc(a.detail)+'" target="_blank" rel="noopener">Ad Library 원본</a>':'')+(a.landing?'<a href="'+esc(a.landing)+'" target="_blank" rel="noopener">랜딩 페이지</a>':'')+'</div>';
+    '<div class="plinks">'+links+'</div>';
   $('#pbody').scrollTop=0;
   $('#peek').classList.add('on'); $('#scrim').classList.add('on'); $('#peek').setAttribute('aria-hidden','false');
 }
@@ -405,7 +484,21 @@ $('#afrow').addEventListener('click',e=>{
 });
 FILT.forEach(id=>$('#'+id).addEventListener('input',apply));
 $('#theme').addEventListener('click',()=>{const r=document.documentElement;const n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('cag-theme',n)}catch(e){}});
-apply();
+
+// ── 탭 전환: 소스별 필터 노출/계정 옵션 교체 후 재필터 ─────────────
+function setTab(t){
+  tab=t;
+  [...$('#tabs').children].forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  document.querySelectorAll('.cmd .sel').forEach(el=>{const sh=el.getAttribute('data-show');el.hidden=sh?!sh.split(' ').includes(t):false;});
+  const accs=TABMETA.accounts[t]||[];
+  const ph=t==='meta_ad'?'브랜드 전체':'계정 전체';
+  $('#f-brand').innerHTML='<option value="">'+ph+'</option>'+accs.map(a=>'<option value="'+esc(a)+'">'+esc(a)+'</option>').join('');
+  FILT.forEach(id=>{const e=$('#'+id);if(!e)return;e.value=id==='f-sort'?'new':'';});
+  closePeek();
+  apply();
+}
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab)});
+setTab('meta_ad');
 </script>
 </body></html>`;
 
