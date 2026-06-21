@@ -8,6 +8,7 @@
     "login:ig": "node collect-ig.js --login",
     "collect:ig": "node collect-ig.js",
     "commit:ig": "node collect-ig.js --commit",
+    "weekly:ig": "bash weekly-ig.sh",
     "render": "node render.js"
   },
   "license": "MIT",

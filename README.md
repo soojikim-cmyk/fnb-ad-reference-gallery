@@ -56,10 +56,16 @@ node render.js                                                    # docs/index.h
 
 ```bash
 npm run login:ig      # 최초 1회: 열린 브라우저에서 인스타 로그인 (세션은 data/.pwprofile-ig 에 저장)
+npm run weekly:ig     # 주간 일괄: 수집 → 비전 태깅 → 머지 → 렌더 (weekly-ig.sh)
+git add -A && git commit -m "Weekly IG update" && git push   # → Pages 자동 재배포
+```
+
+`weekly:ig` 가 내부에서 도는 개별 단계(따로 돌리고 싶을 때):
+```bash
 npm run collect:ig    # 신규 게시물 수집 → data/manifest-ig.json + docs/assets/ig/ 미디어
 claude -p "$(cat tag-prompt.md)" --allowedTools "Read,Write,Glob"   # 비전 태깅 (광고+인스타 공통)
 npm run commit:ig     # gallery.json 머지 (복합 키 ig_owned:* / ig_influencer:* / ig_hashtag:*)
-npm run render        # docs/index.html 재생성 → 커밋·푸시
+npm run render        # docs/index.html 재생성
 ```
 
 수집 대상은 `config.json` 의 `ig_owned`(계정), `ig_influencer`(계정), `ig_hashtags`(그룹별 해시태그)가 SSOT.

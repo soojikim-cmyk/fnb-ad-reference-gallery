@@ -493,7 +493,8 @@ function setTab(t){
   const accs=TABMETA.accounts[t]||[];
   const ph=t==='meta_ad'?'브랜드 전체':'계정 전체';
   $('#f-brand').innerHTML='<option value="">'+ph+'</option>'+accs.map(a=>'<option value="'+esc(a)+'">'+esc(a)+'</option>').join('');
-  FILT.forEach(id=>{const e=$('#'+id);if(!e)return;e.value=id==='f-sort'?'new':'';});
+  const defSort=t==='meta_ad'?'new':'pop';  // 인스타 탭은 인기순 기본
+  FILT.forEach(id=>{const e=$('#'+id);if(!e)return;e.value=id==='f-sort'?defSort:'';});
   closePeek();
   apply();
 }
