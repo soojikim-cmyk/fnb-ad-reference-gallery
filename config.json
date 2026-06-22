@@ -72,6 +72,7 @@
     "제품": ["도가니탕", "갈비탕", "갈비찜", "고등어", "고등어구이", "보양식"],
     "4050트렌드": ["건강식", "건강식품", "명절"]
   },
+  "ig_hashtag_category": "간편식",
   "ig_max_posts_per_target": 30,
   "ig_scroll_pause_ms": 2500,
   "ig_profile_dir": "data/.pwprofile-ig",
