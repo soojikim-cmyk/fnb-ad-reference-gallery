@@ -94,6 +94,7 @@ const catByOwned = {};
 igOwned.forEach(b => { catByOwned[b.label] = b.category || '간편식'; });
 const catByInfl = {};
 igInfluencer.forEach(b => { catByInfl[b.handle] = b.category || '간편식'; });
+const hashtagCat = CFG.ig_hashtag_category || '간편식';  // 해시태그는 그룹과 무관하게 단일 대분류로 처리
 const categories = CFG.categories || ['간편식', '떡'];
 
 function colorFor(a) {
@@ -118,7 +119,8 @@ const DATA = JSON.stringify(ads.map(a => {
     page_id: a.page_id || '', format: a.format,
     category: src === 'meta_ad' ? (catByPage[a.page_id] || '간편식')
       : src === 'ig_owned' ? (catByOwned[a.brand_label] || '간편식')
-      : src === 'ig_influencer' ? (catByInfl[a.handle] || '간편식') : '',
+      : src === 'ig_influencer' ? (catByInfl[a.handle] || '간편식')
+      : src === 'ig_hashtag' ? hashtagCat : '',
     bc: colorFor(a),
     started: a.started || '', active: !!a.is_active, collation: a.collation || 0,
     likes: (typeof a.likes === 'number') ? a.likes : null,
@@ -189,6 +191,7 @@ button{font-family:inherit}
 /* category row (대분류 — 최상위) */
 .catrow{position:sticky;top:52px;z-index:29;height:50px;display:flex;align-items:center;padding:0 22px;
   background:color-mix(in srgb,var(--ground) 82%,transparent);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.catrow[hidden]{display:none}  /* display:flex 가 [hidden] 기본 규칙을 덮어쓰지 않도록 명시 */
 .catrow .seg button{font-size:13.5px;padding:6px 16px}
 
 /* tab row */
@@ -511,7 +514,7 @@ FILT.forEach(id=>$('#'+id).addEventListener('input',apply));
 $('#theme').addEventListener('click',()=>{const r=document.documentElement;const n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('cag-theme',n)}catch(e){}});
 
 // ── 대분류(간편식/떡): 브랜드 기반 탭(meta_ad·ig_owned)에서만 노출 ─────
-const CAT_TABS=['meta_ad','ig_owned','ig_influencer'];
+const CAT_TABS=['meta_ad','ig_owned','ig_influencer','ig_hashtag'];
 // 현재 탭+대분류 범위에 실제 존재하는 값만 옵션으로 남김 → 하위 필터를 대분류에 맞게 구분
 function setOpts(id,vals,ph){
   const el=$('#'+id); if(!el)return;
