@@ -49,7 +49,8 @@
     { "label": "농심", "handle": "nongshim", "category": "간편식" },
     { "label": "오뚜기", "handle": "otoki_daily", "category": "간편식" },
     { "label": "풀무원", "handle": "pulmuone", "category": "간편식" },
-    { "label": "하림", "handle": "harim_official", "category": "간편식" }
+    { "label": "하림", "handle": "harim_official", "category": "간편식" },
+    { "label": "대상", "handle": "daesang_news", "category": "간편식" }
   ],
   "ig_influencer": [
     { "handle": "cjonstyle_liveshow", "category": "간편식" },
@@ -58,6 +59,9 @@
     { "handle": "alora_home", "category": "간편식" },
     { "handle": "yuni_siktak", "category": "간편식" },
     { "handle": "minsajang_", "category": "간편식" },
+    { "handle": "hedmk_official", "category": "간편식" },
+    { "handle": "jangsin1004", "category": "간편식" },
+    { "handle": "cdgb.official", "category": "간편식" },
     { "handle": "joafood.talk", "category": "떡" },
     { "handle": "hongblancfood", "category": "떡" },
     { "handle": "homidam_homii", "category": "떡" },
