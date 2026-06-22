@@ -138,7 +138,7 @@ const DATA = JSON.stringify(ads.map(a => {
 const enums = CFG.tag_enums;
 const formats = ['단일이미지', '캐러셀', '영상', '릴스'];
 const opt = arr => arr.map(v => `<option value="${v}">${v}</option>`).join('');
-const TABMETA = JSON.stringify({ accounts, hgroups, hashtagsFlat, categories, formats, enums });
+const TABMETA = JSON.stringify({ accounts, hgroups, hashtagsFlat, hashtagsByGroup: igHashtags, categories, formats, enums });
 
 const html = `<!doctype html>
 <html lang="ko" data-theme="light"><head><meta charset="utf-8">
@@ -339,7 +339,7 @@ main{padding:20px 22px 90px}
 <div class="cmd">
   <span class="sel" data-show="meta_ad ig_owned ig_influencer"><select id="f-brand"><option value="">브랜드 전체</option>${brands.map(b => `<option value="${b.label}">${b.label}</option>`).join('')}</select></span>
   <span class="sel" data-show="ig_hashtag"><select id="f-group"><option value="">그룹 전체</option>${opt(hgroups)}</select></span>
-  <span class="sel" data-show="ig_hashtag"><select id="f-hashtag"><option value="">해시태그 전체</option>${hashtagsFlat.map(h => `<option value="${h}">#${h}</option>`).join('')}</select></span>
+  <span class="sel" data-show="ig_hashtag"><select id="f-hashtag"><option value="">해시태그 전체</option>${Object.entries(igHashtags).map(([grp, tags]) => `<optgroup label="${grp}">${tags.map(h => `<option value="${h}">#${h}</option>`).join('')}</optgroup>`).join('')}</select></span>
   <span class="sel"><select id="f-format"><option value="">포맷</option>${opt(formats)}</select></span>
   <span class="sel"><select id="f-hook"><option value="">후킹</option>${opt(enums.hook_type)}</select></span>
   <span class="sel"><select id="f-appeal"><option value="">소구</option>${opt(enums.appeal)}</select></span>
@@ -532,6 +532,19 @@ function rebuildOptions(){
   setOpts('f-appeal',present('appeal',TABMETA.enums.appeal),'소구');
   setOpts('f-tone',present('tone',TABMETA.enums.tone),'톤');
 }
+// 해시태그 드롭다운을 그룹별 optgroup 으로 구성 + 선택한 그룹의 해시태그만 노출
+function syncHashtags(){
+  const el=$('#f-hashtag'); if(!el)return;
+  const grp=$('#f-group').value;
+  const byGroup=TABMETA.hashtagsByGroup||{};
+  const groups=grp?{[grp]:byGroup[grp]||[]}:byGroup;
+  const cur=el.value;
+  let html='<option value="">해시태그 전체</option>';
+  for(const g of Object.keys(groups)) html+='<optgroup label="'+esc(g)+'">'+groups[g].map(h=>'<option value="'+esc(h)+'">#'+esc(h)+'</option>').join('')+'</optgroup>';
+  el.innerHTML=html;
+  el.value=[...el.options].some(o=>o.value===cur)?cur:'';
+}
+$('#f-group').addEventListener('change',()=>{syncHashtags();apply();});
 function setCat(c){
   cat=c;
   [...$('#cats').children].forEach(b=>b.classList.toggle('on',b.dataset.cat===c));
@@ -552,6 +565,7 @@ function setTab(t){
   const defSort=t==='meta_ad'?'new':'pop';  // 인스타 탭은 인기순 기본
   FILT.forEach(id=>{const e=$('#'+id);if(!e)return;e.value=id==='f-sort'?defSort:'';});
   rebuildOptions();  // 탭+대분류에 맞춰 브랜드·포맷·후킹·소구·톤 옵션 재구성
+  syncHashtags();    // 해시태그 드롭다운을 그룹별 optgroup 으로 재구성
   closePeek();
   apply();
 }
