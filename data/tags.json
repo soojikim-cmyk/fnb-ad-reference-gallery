@@ -6100,5 +6100,653 @@
     "appeal": "신뢰·리뷰",
     "tone": "정보형",
     "summary": "사무실에서 떡 먹는 장면과 저당 밥알찹쌀떡 소구"
+  },
+  "ig_owned:DZ4lGfaRDWp": {
+    "hook_type": "혜택강조형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "비빔면·육회에 비비고 김부각 곁들인 먹방"
+  },
+  "ig_owned:DZ4IrDbRppY": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "더미식 즉석밥 구매시 저당고추장 증정 이벤트"
+  },
+  "ig_owned:DZ4arT7EWh3": {
+    "hook_type": "문제제기형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "농심 쌀 부침가루 콜라보 전 ASMR 댓글 이벤트"
+  },
+  "ig_owned:DZ4JmQIGvt8": {
+    "hook_type": "호기심형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "포테토칩 엽떡로제맛 신제품 기대평 이벤트"
+  },
+  "ig_owned:DZ370sBAUlD": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "유머형",
+    "summary": "배홍동 비빔면 X 토익 YBM 콜라보 이벤트"
+  },
+  "ig_owned:DZ3onHxHy8u": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "YBM 토익 교재 구매시 배홍동 비빔면 증정"
+  },
+  "ig_owned:DZ4eMKBGQCT": {
+    "hook_type": "정보제공형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "오뚜기 X 디자인하우스 서울국제도서전 부스 안내"
+  },
+  "ig_owned:DZ15XY_Px3j": {
+    "hook_type": "호기심형",
+    "appeal": "라이프스타일",
+    "tone": "유머형",
+    "summary": "소녀시대 효연 콜라보 데뷔 전 관리 영상"
+  },
+  "ig_owned:DZuR89ipqbS": {
+    "hook_type": "혜택강조형",
+    "appeal": "편의성",
+    "tone": "유머형",
+    "summary": "오뚜기 한입전 자취생 간편 막걸리 안주"
+  },
+  "ig_owned:DZ4XY50Egin": {
+    "hook_type": "정보제공형",
+    "appeal": "라이프스타일",
+    "tone": "정보형",
+    "summary": "무더위 입맛 살리는 종가 여름 김치 활용법"
+  },
+  "ig_owned:DZwDFgjzTaq": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "유당불내증도 가능한 식물성 크림치즈 베이글 레시피"
+  },
+  "ig_owned:DZrgd4TEkx3": {
+    "hook_type": "호기심형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "서울식품유통대전 청정원 콩담백면 시식 현장"
+  },
+  "ig_owned:DZmW45rkvZ_": {
+    "hook_type": "정보제공형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "냉동식품 재발견 프로즌 럭셔리 트렌드"
+  },
+  "ig_owned:DZeQdBTTRyw": {
+    "hook_type": "호기심형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "종가 갓김치로 만드는 대패삼겹 파스타 레시피"
+  },
+  "ig_owned:DZZe7G8kkqW": {
+    "hook_type": "혜택강조형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "청정원 파스타 소스로 홈 파인다이닝 연출"
+  },
+  "ig_owned:DZUVVemkhrc": {
+    "hook_type": "정보제공형",
+    "appeal": "라이프스타일",
+    "tone": "정보형",
+    "summary": "스낵킹·HMR 트렌드로 읽는 K-푸드의 미래"
+  },
+  "ig_owned:DZMhWUByX8x": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "종가 신제품 부추겉절이 담당자 Q&A"
+  },
+  "ig_owned:DZG7Bhgz9eW": {
+    "hook_type": "호기심형",
+    "appeal": "신뢰·리뷰",
+    "tone": "유머형",
+    "summary": "청정원 30주년 가짜 로고 찾기 테스트"
+  },
+  "ig_owned:DZMm5t8knwe": {
+    "hook_type": "문제제기형",
+    "appeal": "편의성",
+    "tone": "감성형",
+    "summary": "불 없이 완성하는 이국적 여름 식탁"
+  },
+  "ig_owned:DZCYWgZkmrV": {
+    "hook_type": "호기심형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "방콕 식품박람회 주목받은 대상 K-푸드"
+  },
+  "ig_owned:DY3nw_iSeER": {
+    "hook_type": "호기심형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "미원·종가 백묵은지 광어소금김밥 레시피"
+  },
+  "ig_influencer:DZ4bzJ_DL6_": {
+    "hook_type": "혜택강조형",
+    "appeal": "편의성",
+    "tone": "감성형",
+    "summary": "발 편한 스웨이드 미들 부츠 라이브 소개"
+  },
+  "ig_influencer:DZ4bnBrip8w": {
+    "hook_type": "호기심형",
+    "appeal": "가성비·대용량",
+    "tone": "정보형",
+    "summary": "5만 원대 가죽 인트레치아토 샌들 소개"
+  },
+  "ig_influencer:DZ4aJ-QEruQ": {
+    "hook_type": "문제제기형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "고퀄리티 티셔츠 4종 패키지 소개"
+  },
+  "ig_influencer:DZ4Z53QivhV": {
+    "hook_type": "혜택강조형",
+    "appeal": "편의성",
+    "tone": "정보형",
+    "summary": "활용도 높은 포인텔 가디건 3종 세트"
+  },
+  "ig_influencer:DZ4Vik5As0J": {
+    "hook_type": "후기·증언형",
+    "appeal": "신뢰·리뷰",
+    "tone": "감성형",
+    "summary": "더말로지카 스킨케어 특집전 예고"
+  },
+  "ig_influencer:DZ4TOWyjKgp": {
+    "hook_type": "호기심형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "여름 도트 레이어드 스커트 스타일링"
+  },
+  "ig_influencer:DZ4TK1GDfnQ": {
+    "hook_type": "호기심형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "직장인 여름 플리츠 블라우스 코디 소개"
+  },
+  "ig_influencer:DZ4TErAlAbY": {
+    "hook_type": "비교형",
+    "appeal": "가성비·대용량",
+    "tone": "정보형",
+    "summary": "출근룩 사틴스커트 가격대비 추천"
+  },
+  "ig_influencer:DZ4S_sbFLTh": {
+    "hook_type": "정보제공형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "직장인 여름 카라니트 3종 코디 소개"
+  },
+  "ig_influencer:DZ4S740jMco": {
+    "hook_type": "비교형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "여름 데님과 사틴스커트 룩 비교"
+  },
+  "ig_influencer:DZ4OwTGEae2": {
+    "hook_type": "호기심형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "탄수화물 분해 효소 건강식품 기획전"
+  },
+  "ig_influencer:DZ3jBINgWmo": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "용대리 황태채 단백질 강조 공구"
+  },
+  "ig_influencer:DZ2GkljBUWj": {
+    "hook_type": "호기심형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "마트에 없는 황태채 단백질 소구"
+  },
+  "ig_influencer:DZ3nFxvmZEs": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "무첨가 배도라지즙 공구 개봉"
+  },
+  "ig_influencer:DZ2OVMaNc3Y": {
+    "hook_type": "후기·증언형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "아이 정착한 유산균 비오맘 추천"
+  },
+  "ig_influencer:DZ4sd2jlMo0": {
+    "hook_type": "정보제공형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "24절기 제철 집밥 노트 안내"
+  },
+  "ig_influencer:DZ4VpXzzKkd": {
+    "hook_type": "호기심형",
+    "appeal": "한정·긴급",
+    "tone": "감성형",
+    "summary": "1년 2주 한정 신비복숭아 공구"
+  },
+  "ig_influencer:DXEzewUD8jh": {
+    "hook_type": "호기심형",
+    "appeal": "한정·긴급",
+    "tone": "감성형",
+    "summary": "제철 한정 진도 햇쑥 쑥콩설기"
+  },
+  "ig_influencer:DXEy8ilj7zP": {
+    "hook_type": "호기심형",
+    "appeal": "한정·긴급",
+    "tone": "감성형",
+    "summary": "1년 한정 햇쑥 쑥버무리 주문"
+  },
+  "ig_influencer:DXBEhq6D6mF": {
+    "hook_type": "호기심형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "통콩 들어간 고소한 쑥떡 설기"
+  },
+  "ig_influencer:DU92asPkfDi": {
+    "hook_type": "호기심형",
+    "appeal": "편의성",
+    "tone": "미니멀",
+    "summary": "수십 번 테스트 거친 최상품 큐레이션 소구"
+  },
+  "ig_influencer:DU92Z8iERER": {
+    "hook_type": "호기심형",
+    "appeal": "편의성",
+    "tone": "미니멀",
+    "summary": "앱 큐레이션으로 최상의 맛 제공 강조"
+  },
+  "ig_influencer:DU92ZLQEQ1o": {
+    "hook_type": "혜택강조형",
+    "appeal": "편의성",
+    "tone": "정보형",
+    "summary": "앱 화면 속 술국 밀키트 할인 소개"
+  },
+  "ig_influencer:DZeSe2QEROZ": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "물가 안정 이벤트 최대 78% 할인 기획전 고지"
+  },
+  "ig_influencer:DYghwI4kYOl": {
+    "hook_type": "정보제공형",
+    "appeal": "신뢰·리뷰",
+    "tone": "감성형",
+    "summary": "가정의 달 이벤트 당첨자 발표 안내"
+  },
+  "ig_influencer:DXoDZjOgWUw": {
+    "hook_type": "호기심형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "가정의 달 빈칸 채우기 참여 이벤트 안내"
+  },
+  "ig_influencer:DXfk4wPk0xt": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "교동짬뽕 구매시 스타벅스 기프티콘 증정 이벤트"
+  },
+  "ig_influencer:DXWNDwskeib": {
+    "hook_type": "정보제공형",
+    "appeal": "신뢰·리뷰",
+    "tone": "미니멀",
+    "summary": "댓글 작성 이벤트 당첨자 발표 안내"
+  },
+  "ig_influencer:DW0krZnkaL8": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "감성형",
+    "summary": "봄맞이 기획전 최대 61% 할인 오픈 고지"
+  },
+  "ig_influencer:DWpf1bKEw8r": {
+    "hook_type": "혜택강조형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "댓글 작성시 4만원 핵이득 제품 증정 이벤트"
+  },
+  "ig_influencer:DVvLdLOkfxA": {
+    "hook_type": "혜택강조형",
+    "appeal": "라이프스타일",
+    "tone": "정보형",
+    "summary": "핵믈리에 2기 공식 서포터즈 모집 안내"
+  },
+  "ig_influencer:DSUYbMPEad4": {
+    "hook_type": "호기심형",
+    "appeal": "한정·긴급",
+    "tone": "감성형",
+    "summary": "참PD 통골뱅이탕 신메뉴 특가 마감 임박 고지"
+  },
+  "ig_influencer:DGhtANYyiMc": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "감성형",
+    "summary": "치즈돈까스 먹방과 3일 33% 한정 할인"
+  },
+  "ig_influencer:DJ0vWhHS7Wd": {
+    "hook_type": "호기심형",
+    "appeal": "가성비·대용량",
+    "tone": "유머형",
+    "summary": "1500원 냉면 가성비 강조"
+  },
+  "ig_influencer:DE30E_RyNV_": {
+    "hook_type": "후기·증언형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "두툼 등심돈까스 리뷰 호평과 할인"
+  },
+  "ig_influencer:DZ4ZLHDpK2V": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "감성형",
+    "summary": "아르기닌 MAX 7200 출시 특가 안내"
+  },
+  "ig_influencer:DZ1vVo5JE6n": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "감성형",
+    "summary": "아르기닌 MAX 7200 출시 특가 안내"
+  },
+  "ig_influencer:DZy_DZcJsqS": {
+    "hook_type": "비교형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "아르기닌 함량·가격 비교와 특가"
+  },
+  "ig_influencer:DZxGsPdJazO": {
+    "hook_type": "문제제기형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "아르기닌 고가 이유와 고함량 성분 설명"
+  },
+  "ig_influencer:DZsVbY9n0RH": {
+    "hook_type": "후기·증언형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "밀키트 매출 성과와 감사 동기부여"
+  },
+  "ig_influencer:DZrSfwfJB8D": {
+    "hook_type": "문제제기형",
+    "appeal": "가성비·대용량",
+    "tone": "정보형",
+    "summary": "모듬곱창 물가안정 특가와 소스 증정"
+  },
+  "ig_influencer:DZph7cknytx": {
+    "hook_type": "정보제공형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "고소 송치 이슈 소식과 할인 예고"
+  },
+  "ig_influencer:DZmLc6KHxfr": {
+    "hook_type": "호기심형",
+    "appeal": "라이프스타일",
+    "tone": "유머형",
+    "summary": "검찰청 방문 이슈 콘텐츠와 라이브 예고"
+  },
+  "ig_influencer:DZjuJaPpi0o": {
+    "hook_type": "정보제공형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "부산 맛집 추천과 장신몰 할인 안내"
+  },
+  "ig_influencer:DWD9qH0giey": {
+    "hook_type": "정보제공형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "사골·닭뼈육수 얼큰 닭개장 간편식"
+  },
+  "ig_influencer:DWDKY0dAjcB": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "유럽채소 4종 프리미엄 샐러드박스"
+  },
+  "ig_influencer:DWA9PP1goqD": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "난각번호 2번 초생 유정란 소개"
+  },
+  "ig_influencer:C83sYSFveYb": {
+    "hook_type": "혜택강조형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "네이버 강세일 면류 10인분 구성"
+  },
+  "ig_influencer:Cxchl7ZyJmi": {
+    "hook_type": "혜택강조형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "지마켓 행사 추석 감자떡 HACCP 간식"
+  },
+  "ig_influencer:CqEl9ToP0tF": {
+    "hook_type": "호기심형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "와디즈 첫 출시 삿포로식 스프카레"
+  },
+  "ig_influencer:Cmvq_fpSpq7": {
+    "hook_type": "혜택강조형",
+    "appeal": "신뢰·리뷰",
+    "tone": "감성형",
+    "summary": "아침엔떡국 블로그 체험단 모집"
+  },
+  "ig_influencer:Cl5n5SESzqv": {
+    "hook_type": "혜택강조형",
+    "appeal": "신뢰·리뷰",
+    "tone": "감성형",
+    "summary": "참도깨비 어묵탕 블로그 체험단 모집"
+  },
+  "ig_influencer:ClqQfu5ynZY": {
+    "hook_type": "문제제기형",
+    "appeal": "편의성",
+    "tone": "감성형",
+    "summary": "한파 대비 집밥 참도깨비 어묵탕"
+  },
+  "ig_influencer:CkpCRMEv3dY": {
+    "hook_type": "정보제공형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "국내산 돼지고기 묵은지 통돼지 김치찜"
+  },
+  "ig_influencer:CkpBmM_P3QL": {
+    "hook_type": "혜택강조형",
+    "appeal": "가성비·대용량",
+    "tone": "감성형",
+    "summary": "톡딜 2~3인 대용량 국내산 감자탕"
+  },
+  "ig_influencer:Cj1XG7TveKo": {
+    "hook_type": "혜택강조형",
+    "appeal": "가성비·대용량",
+    "tone": "감성형",
+    "summary": "옥션 행사 사누끼 우동 10인분 구성"
+  },
+  "ig_influencer:DZtd7ldhyWI": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "공장 직납가 굳지 않는 냉동 모찌반죽 클로즈업"
+  },
+  "ig_influencer:DZq1PRnvlaT": {
+    "hook_type": "비교형",
+    "appeal": "가성비·대용량",
+    "tone": "정보형",
+    "summary": "전문매장급 품질 강조 딸기모찌 단면 컷"
+  },
+  "ig_influencer:DZh-AWOPUPZ": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "딸기 단면 클로즈업 냉동 모찌반죽 비주얼"
+  },
+  "ig_influencer:DZh97JfNqL_": {
+    "hook_type": "호기심형",
+    "appeal": "편의성",
+    "tone": "감성형",
+    "summary": "쫀득한 모찌반죽 늘이는 장면과 납품 멘트"
+  },
+  "ig_influencer:DZh9kI6tB8N": {
+    "hook_type": "정보제공형",
+    "appeal": "편의성",
+    "tone": "감성형",
+    "summary": "디저트 카페 대상 딸기모찌 창업 안내"
+  },
+  "ig_influencer:DZh9XTgPNZu": {
+    "hook_type": "문제제기형",
+    "appeal": "편의성",
+    "tone": "감성형",
+    "summary": "장갑 낀 작업 손과 모찌 창업 제안"
+  },
+  "ig_influencer:DZh8YussDbm": {
+    "hook_type": "혜택강조형",
+    "appeal": "편의성",
+    "tone": "감성형",
+    "summary": "접시에 담긴 딸기모찌와 1평 창업 제안"
+  },
+  "ig_influencer:DYg9fCMETzv": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "팬에 구운 떡볶이 치즈떡 클로즈업과 세 분 증정"
+  },
+  "ig_influencer:DSZlyd3EVN0": {
+    "hook_type": "정보제공형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "크리스마스 전 출고 일정과 초코 치즈 세트 안내"
+  },
+  "ig_influencer:Cr0Gng9Nm8z": {
+    "hook_type": "후기·증언형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "체다렐라 치즈떡 떡볶이 클로즈업과 3차 주문 오픈"
+  },
+  "ig_influencer:DZ4giNaAc6Y": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "단면 공개한 제철 신비 복숭아 입고 안내"
+  },
+  "ig_influencer:DZ3hsaeBOm6": {
+    "hook_type": "혜택강조형",
+    "appeal": "라이프스타일",
+    "tone": "정보형",
+    "summary": "떡 6종 첫만남 세트 무료배송과 회원가입 적립"
+  },
+  "ig_influencer:DZtjBUlgbJF": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "미니멀",
+    "summary": "녹아내리는 모짜렐라 치즈떡 단면 클로즈업"
+  },
+  "ig_influencer:DZllcHQgZiV": {
+    "hook_type": "정보제공형",
+    "appeal": "편의성",
+    "tone": "정보형",
+    "summary": "당일 출고 기준과 현미가래떡 할인 마감 안내"
+  },
+  "ig_influencer:DZce5mJAZgV": {
+    "hook_type": "정보제공형",
+    "appeal": "한정·긴급",
+    "tone": "정보형",
+    "summary": "출고 일정과 한정 수량 품목 품절 안내"
+  },
+  "ig_influencer:DZbdl-XAWo-": {
+    "hook_type": "혜택강조형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "단면 공개한 제철 밤호박과 떡 할인 마감 안내"
+  },
+  "ig_influencer:DZZgWHdEeIr": {
+    "hook_type": "혜택강조형",
+    "appeal": "품질·성분",
+    "tone": "감성형",
+    "summary": "구운 치즈떡 클로즈업과 두 분 댓글 선물 안내"
+  },
+  "ig_influencer:DZWYfaoAULx": {
+    "hook_type": "정보제공형",
+    "appeal": "품질·성분",
+    "tone": "정보형",
+    "summary": "공주 밤 재입고와 순차 출고 일정 안내"
+  },
+  "ig_influencer:DZJnuaVkTVM": {
+    "hook_type": "정보제공형",
+    "appeal": "편의성",
+    "tone": "정보형",
+    "summary": "4시 전 주문 떡 당일 출고 기준 안내"
+  },
+  "ig_influencer:DZ2NjKwOojb": {
+    "hook_type": "후기·증언형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "망원동 경기떡집 이북식 이티떡 떡집투어"
+  },
+  "ig_influencer:DZpau7VOTjp": {
+    "hook_type": "정보제공형",
+    "appeal": "편의성",
+    "tone": "정보형",
+    "summary": "망고요거트 찹쌀떡 매장 웨이팅·구매 안내"
+  },
+  "ig_influencer:DZo8YtMu2ew": {
+    "hook_type": "정보제공형",
+    "appeal": "편의성",
+    "tone": "감성형",
+    "summary": "망고요거트 찹쌀떡 보관법과 보냉백 반값 안내"
+  },
+  "ig_influencer:DZkGdGTncCR": {
+    "hook_type": "정보제공형",
+    "appeal": "가성비·대용량",
+    "tone": "감성형",
+    "summary": "가성비 생과일찹쌀떡 만드는 호미담 인사"
+  },
+  "ig_influencer:DZfLUDLp1i1": {
+    "hook_type": "정보제공형",
+    "appeal": "품질·성분",
+    "tone": "유머형",
+    "summary": "무설탕 호박절편 신메뉴 소개"
+  },
+  "ig_influencer:DZaA0fuJ3lX": {
+    "hook_type": "호기심형",
+    "appeal": "품질·성분",
+    "tone": "유머형",
+    "summary": "호박절편 쫄깃함 늘이는 테스트"
+  },
+  "ig_influencer:DZH8Q7txacF": {
+    "hook_type": "후기·증언형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "CU 편의점 호박인절미 떡집투어"
+  },
+  "ig_influencer:DZD3xlqy-bu": {
+    "hook_type": "호기심형",
+    "appeal": "라이프스타일",
+    "tone": "유머형",
+    "summary": "떡집 사장의 흔한 주말 작업 일상"
+  },
+  "ig_influencer:DY9f37MOyRX": {
+    "hook_type": "후기·증언형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "고령 진미당제과 옛날 찹쌀떡 떡집투어"
+  },
+  "ig_influencer:DY4Y_6LJrmi": {
+    "hook_type": "후기·증언형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "서문시장 동산김밥 약밥 떡집투어"
+  },
+  "ig_influencer:DYzY_WUOv8C": {
+    "hook_type": "후기·증언형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "코오롱 떡집 호박떡 떡집투어"
+  },
+  "ig_influencer:DYuOf65uSbf": {
+    "hook_type": "정보제공형",
+    "appeal": "라이프스타일",
+    "tone": "감성형",
+    "summary": "망고요거떡 1개 3천원 신제품 출시 안내"
   }
 }
