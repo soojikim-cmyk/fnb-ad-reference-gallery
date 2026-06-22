@@ -87,6 +87,15 @@ const GROUP_PALETTE = ['#5e6ad2', '#2f9e8f', '#c2853a', '#c05b86', '#3a8dde'];
 const groupColor = {};
 hgroups.forEach((g, i) => { groupColor[g] = GROUP_PALETTE[i % GROUP_PALETTE.length]; });
 
+// 대분류(간편식/떡) — config가 SSOT. meta=page_id, ig_owned=brand_label 기준
+const catByPage = {};
+CFG.brands.forEach(b => { catByPage[b.page_id] = b.category || '간편식'; });
+const catByOwned = {};
+igOwned.forEach(b => { catByOwned[b.label] = b.category || '간편식'; });
+const catByInfl = {};
+igInfluencer.forEach(b => { catByInfl[b.handle] = b.category || '간편식'; });
+const categories = CFG.categories || ['간편식', '떡'];
+
 function colorFor(a) {
   const s = srcOf(a);
   if (s === 'ig_owned') return ownedColor[a.brand_label] || BRAND_PALETTE[0];
@@ -107,6 +116,9 @@ const DATA = JSON.stringify(ads.map(a => {
   return {
     id: a.library_id, src, brand: display, account, handle: a.handle || '',
     page_id: a.page_id || '', format: a.format,
+    category: src === 'meta_ad' ? (catByPage[a.page_id] || '간편식')
+      : src === 'ig_owned' ? (catByOwned[a.brand_label] || '간편식')
+      : src === 'ig_influencer' ? (catByInfl[a.handle] || '간편식') : '',
     bc: colorFor(a),
     started: a.started || '', active: !!a.is_active, collation: a.collation || 0,
     likes: (typeof a.likes === 'number') ? a.likes : null,
@@ -122,8 +134,9 @@ const DATA = JSON.stringify(ads.map(a => {
 }));
 
 const enums = CFG.tag_enums;
+const formats = ['단일이미지', '캐러셀', '영상', '릴스'];
 const opt = arr => arr.map(v => `<option value="${v}">${v}</option>`).join('');
-const TABMETA = JSON.stringify({ accounts, hgroups, hashtagsFlat });
+const TABMETA = JSON.stringify({ accounts, hgroups, hashtagsFlat, categories, formats, enums });
 
 const html = `<!doctype html>
 <html lang="ko" data-theme="light"><head><meta charset="utf-8">
@@ -173,14 +186,19 @@ button{font-family:inherit}
   color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .14s}
 .iconbtn:hover{border-color:var(--line-strong);color:var(--text)}
 
+/* category row (대분류 — 최상위) */
+.catrow{position:sticky;top:52px;z-index:29;height:50px;display:flex;align-items:center;padding:0 22px;
+  background:color-mix(in srgb,var(--ground) 82%,transparent);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+.catrow .seg button{font-size:13.5px;padding:6px 16px}
+
 /* tab row */
-.tabrow{position:sticky;top:52px;z-index:29;height:48px;display:flex;align-items:center;padding:0 22px;overflow-x:auto;
+.tabrow{position:sticky;top:102px;z-index:29;height:48px;display:flex;align-items:center;padding:0 22px;overflow-x:auto;
   background:color-mix(in srgb,var(--ground) 82%,transparent);backdrop-filter:saturate(1.4) blur(12px)}
 .tabrow .seg button .tc{display:inline-block;margin-left:5px;font-family:var(--mono);font-size:10.5px;color:var(--faint)}
 .tabrow .seg button.on .tc{color:var(--accent)}
 
 /* command row */
-.cmd{position:sticky;top:100px;z-index:28;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 22px;
+.cmd{position:sticky;top:150px;z-index:28;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 22px;
   background:color-mix(in srgb,var(--ground) 82%,transparent);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
 .sel[hidden]{display:none}
 .seg{display:flex;background:var(--inset);border:1px solid var(--line-2);border-radius:9px;padding:2px}
@@ -299,6 +317,13 @@ main{padding:20px 22px 90px}
   </div>
 </div>
 
+<div class="catrow">
+  <div class="seg" id="cats" role="tablist">
+    <button class="on" data-cat="">전체</button>
+    ${categories.map(c => `<button data-cat="${c}">${c}</button>`).join('')}
+  </div>
+</div>
+
 <div class="tabrow">
   <div class="seg" id="tabs" role="tablist">
     <button class="on" data-tab="meta_ad">Meta 광고 <span class="tc">${srcCount.meta_ad}</span></button>
@@ -312,7 +337,7 @@ main{padding:20px 22px 90px}
   <span class="sel" data-show="meta_ad ig_owned ig_influencer"><select id="f-brand"><option value="">브랜드 전체</option>${brands.map(b => `<option value="${b.label}">${b.label}</option>`).join('')}</select></span>
   <span class="sel" data-show="ig_hashtag"><select id="f-group"><option value="">그룹 전체</option>${opt(hgroups)}</select></span>
   <span class="sel" data-show="ig_hashtag"><select id="f-hashtag"><option value="">해시태그 전체</option>${hashtagsFlat.map(h => `<option value="${h}">#${h}</option>`).join('')}</select></span>
-  <span class="sel"><select id="f-format"><option value="">포맷</option>${opt(['단일이미지', '캐러셀', '영상', '릴스'])}</select></span>
+  <span class="sel"><select id="f-format"><option value="">포맷</option>${opt(formats)}</select></span>
   <span class="sel"><select id="f-hook"><option value="">후킹</option>${opt(enums.hook_type)}</select></span>
   <span class="sel"><select id="f-appeal"><option value="">소구</option>${opt(enums.appeal)}</select></span>
   <span class="sel"><select id="f-tone"><option value="">톤</option>${opt(enums.tone)}</select></span>
@@ -343,7 +368,7 @@ const TABMETA = ${TABMETA};
 const $ = s => document.querySelector(s);
 const FILT = ['f-brand','f-group','f-hashtag','f-format','f-hook','f-appeal','f-tone','f-active','f-sort','f-q'];
 const LAB = {'f-brand':'브랜드','f-group':'그룹','f-hashtag':'해시태그','f-format':'포맷','f-hook':'후킹','f-appeal':'소구','f-tone':'톤','f-active':'상태'};
-let tab = 'meta_ad', view = [], cur = -1, activeCard = null;
+let tab = 'meta_ad', cat = '', view = [], cur = -1, activeCard = null;
 const esc = s => (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmtNum = n => n==null?'':(n>=10000?(n/10000).toFixed(n>=100000?0:1).replace(/\.0$/,'')+'만':n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'천':String(n));
 function engaged(a){let o='';if(a.likes!=null)o+='<span class="sep">·</span><span>♥ '+fmtNum(a.likes)+'</span>';if(a.comments!=null)o+='<span class="sep">·</span><span>💬 '+fmtNum(a.comments)+'</span>';return o}
@@ -384,7 +409,7 @@ const emptyEl=document.createElement('div');emptyEl.className='empty';emptyEl.te
 function apply(){
   if(activeCard)stopInline(activeCard);
   const f=fv(), q=(f['f-q']||'').trim().toLowerCase();
-  const vis=ADS.map((a,idx)=>({a,idx})).filter(({a})=>a.src===tab&&(!f['f-brand']||a.account===f['f-brand'])&&(!f['f-group']||a.hgroup===f['f-group'])&&(!f['f-hashtag']||(a.hashtags||[]).includes(f['f-hashtag']))&&(!f['f-format']||a.format===f['f-format'])&&(!f['f-hook']||a.hook===f['f-hook'])&&(!f['f-appeal']||a.appeal===f['f-appeal'])&&(!f['f-tone']||a.tone===f['f-tone'])&&(f['f-active']===''||(f['f-active']==='1')===a.active)&&(!q||a.copy.toLowerCase().includes(q)||(a.summary||'').toLowerCase().includes(q)));
+  const vis=ADS.map((a,idx)=>({a,idx})).filter(({a})=>a.src===tab&&(!cat||a.category===cat)&&(!f['f-brand']||a.account===f['f-brand'])&&(!f['f-group']||a.hgroup===f['f-group'])&&(!f['f-hashtag']||(a.hashtags||[]).includes(f['f-hashtag']))&&(!f['f-format']||a.format===f['f-format'])&&(!f['f-hook']||a.hook===f['f-hook'])&&(!f['f-appeal']||a.appeal===f['f-appeal'])&&(!f['f-tone']||a.tone===f['f-tone'])&&(f['f-active']===''||(f['f-active']==='1')===a.active)&&(!q||a.copy.toLowerCase().includes(q)||(a.summary||'').toLowerCase().includes(q)));
   if(f['f-sort']==='pop')vis.sort((x,y)=>(y.a.likes==null?-1:y.a.likes)-(x.a.likes==null?-1:x.a.likes));
   else vis.sort((x,y)=>f['f-sort']==='old'?(x.a.started>y.a.started?1:-1):(x.a.started<y.a.started?1:-1));
   view=vis.map(o=>o.idx);
@@ -485,16 +510,45 @@ $('#afrow').addEventListener('click',e=>{
 FILT.forEach(id=>$('#'+id).addEventListener('input',apply));
 $('#theme').addEventListener('click',()=>{const r=document.documentElement;const n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('cag-theme',n)}catch(e){}});
 
+// ── 대분류(간편식/떡): 브랜드 기반 탭(meta_ad·ig_owned)에서만 노출 ─────
+const CAT_TABS=['meta_ad','ig_owned','ig_influencer'];
+// 현재 탭+대분류 범위에 실제 존재하는 값만 옵션으로 남김 → 하위 필터를 대분류에 맞게 구분
+function setOpts(id,vals,ph){
+  const el=$('#'+id); if(!el)return;
+  const cur=el.value;
+  el.innerHTML='<option value="">'+esc(ph)+'</option>'+vals.map(v=>'<option value="'+esc(v)+'">'+esc(v)+'</option>').join('');
+  el.value=vals.includes(cur)?cur:'';
+}
+function rebuildOptions(){
+  const inScope=a=>a.src===tab&&(!cat||a.category===cat);
+  const present=(field,order)=>order.filter(v=>ADS.some(a=>inScope(a)&&a[field]===v));
+  const ph=tab==='meta_ad'?'브랜드 전체':'계정 전체';
+  setOpts('f-brand',present('account',TABMETA.accounts[tab]||[]),ph);
+  setOpts('f-format',present('format',TABMETA.formats),'포맷');
+  setOpts('f-hook',present('hook',TABMETA.enums.hook_type),'후킹');
+  setOpts('f-appeal',present('appeal',TABMETA.enums.appeal),'소구');
+  setOpts('f-tone',present('tone',TABMETA.enums.tone),'톤');
+}
+function setCat(c){
+  cat=c;
+  [...$('#cats').children].forEach(b=>b.classList.toggle('on',b.dataset.cat===c));
+  rebuildOptions();
+  apply();
+}
+$('#cats').addEventListener('click',e=>{const b=e.target.closest('button[data-cat]');if(b)setCat(b.dataset.cat)});
+
 // ── 탭 전환: 소스별 필터 노출/계정 옵션 교체 후 재필터 ─────────────
 function setTab(t){
   tab=t;
   [...$('#tabs').children].forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
   document.querySelectorAll('.cmd .sel').forEach(el=>{const sh=el.getAttribute('data-show');el.hidden=sh?!sh.split(' ').includes(t):false;});
-  const accs=TABMETA.accounts[t]||[];
-  const ph=t==='meta_ad'?'브랜드 전체':'계정 전체';
-  $('#f-brand').innerHTML='<option value="">'+ph+'</option>'+accs.map(a=>'<option value="'+esc(a)+'">'+esc(a)+'</option>').join('');
+  // 대분류는 브랜드 기반 탭에서만 의미가 있음 → 그 외 탭에서는 행 숨김 + 전체로 리셋
+  $('.catrow').hidden=!CAT_TABS.includes(t);
+  cat='';
+  [...$('#cats').children].forEach(b=>b.classList.toggle('on',b.dataset.cat===''));
   const defSort=t==='meta_ad'?'new':'pop';  // 인스타 탭은 인기순 기본
   FILT.forEach(id=>{const e=$('#'+id);if(!e)return;e.value=id==='f-sort'?defSort:'';});
+  rebuildOptions();  // 탭+대분류에 맞춰 브랜드·포맷·후킹·소구·톤 옵션 재구성
   closePeek();
   apply();
 }
