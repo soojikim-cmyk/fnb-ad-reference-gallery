@@ -92,6 +92,8 @@ const catByPage = {};
 CFG.brands.forEach(b => { catByPage[b.page_id] = b.category || '간편식'; });
 const catByOwned = {};
 igOwned.forEach(b => { catByOwned[b.label] = b.category || '간편식'; });
+const catByInfl = {};
+igInfluencer.forEach(b => { catByInfl[b.handle] = b.category || '간편식'; });
 const categories = CFG.categories || ['간편식', '떡'];
 
 function colorFor(a) {
@@ -115,7 +117,8 @@ const DATA = JSON.stringify(ads.map(a => {
     id: a.library_id, src, brand: display, account, handle: a.handle || '',
     page_id: a.page_id || '', format: a.format,
     category: src === 'meta_ad' ? (catByPage[a.page_id] || '간편식')
-      : src === 'ig_owned' ? (catByOwned[a.brand_label] || '간편식') : '',
+      : src === 'ig_owned' ? (catByOwned[a.brand_label] || '간편식')
+      : src === 'ig_influencer' ? (catByInfl[a.handle] || '간편식') : '',
     bc: colorFor(a),
     started: a.started || '', active: !!a.is_active, collation: a.collation || 0,
     likes: (typeof a.likes === 'number') ? a.likes : null,
@@ -508,7 +511,7 @@ FILT.forEach(id=>$('#'+id).addEventListener('input',apply));
 $('#theme').addEventListener('click',()=>{const r=document.documentElement;const n=r.getAttribute('data-theme')==='dark'?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('cag-theme',n)}catch(e){}});
 
 // ── 대분류(간편식/떡): 브랜드 기반 탭(meta_ad·ig_owned)에서만 노출 ─────
-const CAT_TABS=['meta_ad','ig_owned'];
+const CAT_TABS=['meta_ad','ig_owned','ig_influencer'];
 // 현재 탭+대분류 범위에 실제 존재하는 값만 옵션으로 남김 → 하위 필터를 대분류에 맞게 구분
 function setOpts(id,vals,ph){
   const el=$('#'+id); if(!el)return;

@@ -17,7 +17,12 @@
     { "label": "다신샵", "page_id": "1408140989464114", "category": "간편식" },
     { "label": "느으림", "page_id": "1034293919766971", "category": "간편식" },
     { "label": "집코드", "page_id": "871750539353573", "category": "간편식" },
-    { "label": "홀썸위크", "page_id": "140021705871266", "category": "간편식" }
+    { "label": "홀썸위크", "page_id": "140021705871266", "category": "간편식" },
+    { "label": "떡미당", "page_id": "1948386722106599", "category": "떡" },
+    { "label": "명가삼대떡집 스토어", "page_id": "799929329861428", "category": "떡" },
+    { "label": "조선팔도떡집", "page_id": "1029708760227962", "category": "떡" },
+    { "label": "청년떡집", "page_id": "252853452131907", "category": "떡" },
+    { "label": "백년화편", "page_id": "455002111206689", "category": "떡" }
   ],
   "country": "KR",
   "active_only": true,
@@ -47,12 +52,16 @@
     { "label": "하림", "handle": "harim_official", "category": "간편식" }
   ],
   "ig_influencer": [
-    { "handle": "cjonstyle_liveshow" },
-    { "handle": "nalssin_cook" },
-    { "handle": "kongkong.mommy" },
-    { "handle": "alora_home" },
-    { "handle": "yuni_siktak" },
-    { "handle": "minsajang_" }
+    { "handle": "cjonstyle_liveshow", "category": "간편식" },
+    { "handle": "nalssin_cook", "category": "간편식" },
+    { "handle": "kongkong.mommy", "category": "간편식" },
+    { "handle": "alora_home", "category": "간편식" },
+    { "handle": "yuni_siktak", "category": "간편식" },
+    { "handle": "minsajang_", "category": "간편식" },
+    { "handle": "joafood.talk", "category": "떡" },
+    { "handle": "hongblancfood", "category": "떡" },
+    { "handle": "homidam_homii", "category": "떡" },
+    { "handle": "chosunpaldodduk", "category": "떡" }
   ],
   "ig_hashtags": {
     "상황": ["집밥", "한그릇", "주말집밥", "부모님선물", "저당", "초복", "중복", "말복"],
