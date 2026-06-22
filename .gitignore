@@ -6,3 +6,11 @@ data/manifest.json
 data/manifest-ig.json
 *.log
 .DS_Store
+
+# 태깅 임시 헬퍼(수동/Action 중첩 claude가 권한 우회로 남기는 파일) — 커밋 금지
+data/new_tags.json
+data/_tag_patch.py
+data/_pending.js
+data/.cands.json
+data/_*.py
+data/_*.js
