@@ -57,6 +57,7 @@ button{font-family:inherit}
   background:color-mix(in srgb,var(--ground) 82%,transparent);backdrop-filter:saturate(1.4) blur(12px)}
 .tabrow .seg button .tc{display:inline-block;margin-left:5px;font-family:var(--mono);font-size:10.5px;color:var(--faint)}
 .tabrow .seg button.on .tc{color:var(--accent)}
+.tabrow .seg button:disabled{opacity:.32;cursor:not-allowed}  /* 현재 대분류에 0건인 탭 */
 
 /* command row */
 .cmd{position:sticky;top:150px;z-index:28;display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 22px;
@@ -403,31 +404,49 @@ function syncHashtags(){
   el.value=[...el.options].some(o=>o.value===cur)?cur:'';
 }
 $('#f-group').addEventListener('change',()=>{syncHashtags();apply();});
+// 현재 대분류(cat) 기준 탭별 건수
+function catCount(t){let n=0;for(const a of ADS){if(a.src===t&&(!cat||a.category===cat))n++;}return n;}
+// 탭 뱃지 카운트를 현재 대분류에 맞춰 갱신 + 0건 탭은 비활성(클릭 불가)
+function updateTabs(){
+  [...$('#tabs').children].forEach(b=>{
+    const n=catCount(b.dataset.tab);
+    const tc=b.querySelector('.tc'); if(tc)tc.textContent=n;
+    b.disabled=n===0;
+  });
+}
 function setCat(c){
   cat=c;
   [...$('#cats').children].forEach(b=>b.classList.toggle('on',b.dataset.cat===c));
+  updateTabs();
+  // 현재 탭이 이 대분류에서 0건이면 → 항목 있는 첫 탭으로 자동 이동(대분류 유지) → 빈 화면 방지
+  if(c && catCount(tab)===0){
+    const nb=[...$('#tabs').children].find(b=>catCount(b.dataset.tab)>0);
+    if(nb){setTab(nb.dataset.tab,true);return;}
+  }
   rebuildOptions();
   apply();
 }
 $('#cats').addEventListener('click',e=>{const b=e.target.closest('button[data-cat]');if(b)setCat(b.dataset.cat)});
 
 // ── 탭 전환: 소스별 필터 노출/계정 옵션 교체 후 재필터 ─────────────
-function setTab(t){
+function setTab(t,keepCat){
   tab=t;
   [...$('#tabs').children].forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
   document.querySelectorAll('.cmd .sel').forEach(el=>{const sh=el.getAttribute('data-show');el.hidden=sh?!sh.split(' ').includes(t):false;});
-  // 대분류는 브랜드 기반 탭에서만 의미가 있음 → 그 외 탭에서는 행 숨김 + 전체로 리셋
   $('.catrow').hidden=!CAT_TABS.includes(t);
-  cat='';
-  [...$('#cats').children].forEach(b=>b.classList.toggle('on',b.dataset.cat===''));
+  if(!keepCat){  // 탭을 직접 누르면 대분류 전체로 리셋, 대분류 선택에 의한 자동이동이면 유지
+    cat='';
+    [...$('#cats').children].forEach(b=>b.classList.toggle('on',b.dataset.cat===''));
+  }
   const defSort=t==='meta_ad'?'new':'pop';  // 인스타 탭은 인기순 기본
   FILT.forEach(id=>{const e=$('#'+id);if(!e)return;e.value=id==='f-sort'?defSort:'';});
+  updateTabs();      // 탭 카운트를 현재 대분류에 맞춰 갱신
   rebuildOptions();  // 탭+대분류에 맞춰 브랜드·포맷·후킹·소구·톤 옵션 재구성
   syncHashtags();    // 해시태그 드롭다운을 그룹별 optgroup 으로 재구성
   closePeek();
   apply();
 }
-$('#tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b)setTab(b.dataset.tab)});
+$('#tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(b&&!b.disabled)setTab(b.dataset.tab)});
 setTab('meta_ad');
 </script>
 </body></html>
