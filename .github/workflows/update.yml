@@ -40,9 +40,13 @@ jobs:
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
         # 도구를 Read/Write/Glob 로만 스코프 — 승인 게이트 전체 우회 안 함.
+        # 태깅은 신규분만 data/new_tags.json 에 Write (큰 tags.json 직접 Edit 시 권한 게이트에 막혀 태그 유실되던 문제 회피).
         run: |
           npm install -g @anthropic-ai/claude-code
-          claude -p "$(cat tag-prompt.md)" --allowedTools "Read,Write,Glob" --max-turns 150
+          claude -p "$(cat tag-prompt.md)" --allowedTools "Read,Write,Glob" --max-turns 200
+
+      - name: Merge new tags into tags.json
+        run: node merge-tags.js
 
       - name: Merge into gallery DB
         run: node collect.js --commit

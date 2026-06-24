@@ -19,7 +19,9 @@ node collect-ig.js
 
 echo "▶ 2/4  비전 태깅 (Claude Code · 신규만)"
 if command -v claude >/dev/null 2>&1; then
+  # 태깅은 신규분만 data/new_tags.json 에 Write → merge-tags.js 가 결정적으로 tags.json 에 병합.
   claude -p "$(cat tag-prompt.md)" --allowedTools "Read,Write,Glob" --max-turns 200
+  node merge-tags.js
 else
   echo "  ⚠ claude CLI 없음 — 태깅 건너뜀(태그는 비어 있게 들어가며, 나중에 태깅 후 재실행하면 백필됩니다)."
 fi
