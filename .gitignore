@@ -14,3 +14,10 @@ data/_pending.js
 data/.cands.json
 data/_*.py
 data/_*.js
+
+# 태깅 임시 헬퍼(레포 루트에 생기는 경우) — 커밋 금지
+/_*.py
+/_*.js
+/_*.txt
+/_cand*
+/_allcand*
