@@ -58,6 +58,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --cached --quiet || git commit -m "Weekly gallery update"
-          git push
+          git add data docs                         # 산출물만 — 태깅이 만든 루트 임시 스크립트 제외
+          git diff --cached --quiet && { echo "변경 없음"; exit 0; }
+          git commit -m "Weekly gallery update"
+          for i in 1 2 3; do
+            if git pull --rebase origin main && git push; then echo "푸시 완료"; exit 0; fi
+            git rebase --abort 2>/dev/null || true
+            echo "원격 갱신/충돌 — 재시도 $i"; sleep 5
+          done
+          echo "푸시 실패(재시도 소진)"; exit 1
