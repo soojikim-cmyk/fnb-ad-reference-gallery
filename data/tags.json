@@ -9994,5 +9994,17 @@
     "appeal": "라이프스타일",
     "tone": "감성형",
     "summary": "우삼겹갈비탕 홈쿡 도시락 메뉴 기록"
+  },
+  "ig_owned:DaB6NRnk7JT": {
+    "hook_type": "정보제공형",
+    "appeal": "신뢰·리뷰",
+    "tone": "정보형",
+    "summary": "NBB 상권 개발 전문가의 맞춤형 창업 노하우 인터뷰"
+  },
+  "ig_owned:DaB6pO0k88m": {
+    "hook_type": "정보제공형",
+    "appeal": "라이프스타일",
+    "tone": "유머형",
+    "summary": "농심 망고킥 활용 고망고 여름 디저트 신메뉴 출시"
   }
 }
