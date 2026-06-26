@@ -11,12 +11,18 @@ LOG="data/daily-ig.log"
 {
   echo "===== $(date '+%Y-%m-%d %H:%M:%S') daily-ig 시작 ====="
   if bash weekly-ig.sh; then
-    git add -A
+    git add data docs                              # 산출물만 — 태깅이 만든 루트 임시 스크립트 제외
     if git diff --cached --quiet; then
       echo "변경 없음 — 커밋 생략."
     else
       git commit -m "Daily IG update $(date '+%Y-%m-%d')"
-      if git push; then echo "푸시 완료."; else echo "⚠ 푸시 실패(인증/네트워크 확인)."; fi
+      pushed=0
+      for i in 1 2 3; do
+        if git pull --rebase origin main && git push; then echo "푸시 완료."; pushed=1; break; fi
+        git rebase --abort 2>/dev/null || true
+        echo "푸시 재시도 $i (원격 갱신/충돌)..."; sleep 5
+      done
+      [ "$pushed" = 1 ] || echo "⚠ 푸시 실패(재시도 소진 — 인증/충돌 확인)."
     fi
   else
     echo "⚠ 파이프라인 실패 — 커밋/푸시 생략. 인스타 세션 만료 시 'npm run login:ig' 재실행 필요."
